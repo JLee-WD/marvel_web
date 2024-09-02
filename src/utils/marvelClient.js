@@ -25,14 +25,6 @@ async function fetchMarvelData(endpoint, params = {}) {
     ...params, // Additional parameters passed to the function
   };
 
-  console.log('Query params:', queryParams);
-
-  // Construct the full URL
-  const fullUrl = `${baseUrl}/${endpoint}?${querystring.stringify(queryParams)}`;
-
-  // Log the constructed URL
-  console.log('Constructed URL:', fullUrl);
-
   try {
     const response = await axios.get(`${baseUrl}/${endpoint}`, {
       params: queryParams,

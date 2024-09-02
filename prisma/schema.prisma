@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Character {
+  id            Int             @id @default(autoincrement())
+  name          String
+  description   String
+  thumbnail     String
+  comics        CharacterComic[]       
+}
+
+model Comic {
+  id            Int             @id @default(autoincrement())
+  title         String
+  publishedDate String
+  characters    CharacterComic[]   
+}
+
+model CharacterComic {
+  characterId   Int
+  comicId       Int
+
+  Character     Character       @relation(fields: [characterId], references: [id])
+  Comic         Comic           @relation(fields: [comicId], references: [id])
+
+  @@id([characterId, comicId])
+}
