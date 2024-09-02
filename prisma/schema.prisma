@@ -15,16 +15,16 @@ datasource db {
 
 model Character {
   id            Int             @id @default(autoincrement())
-  name          String
-  description   String
-  thumbnail     String
+  name          String?
+  description   String?
+  thumbnail     String?
   comics        CharacterComic[]       
 }
 
 model Comic {
   id            Int             @id @default(autoincrement())
-  title         String
-  publishedDate String
+  title         String?
+  publishedDate String?
   characters    CharacterComic[]   
 }
 
