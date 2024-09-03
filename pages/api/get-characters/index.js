@@ -1,28 +1,44 @@
 import { PrismaClient } from '@prisma/client';
 import fetchMarvelData from "@/utils/marvelClient";
+import addCharacterToDb from "@/utils/addCharacterToDb";
 
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
-  const offset = req.query.offset || 0;
-  const limit = req.query.limit || 10;
+  
+  const offset = parseInt(req.query.offset) || 0;
+  const limit = parseInt(req.query.limit) || 16;
+  const MAX_LIMIT = 50; // Define your maximum limit
+  const MIN_LIMIT = 1;   // Define your minimum limit
+  const sanitizedLimit = Math.min(Math.max(limit, MIN_LIMIT), MAX_LIMIT);
+  let dbData;
+
   try {
-    let data;
+    dbData = await prisma.character.findMany({
+      skip: offset,
+      take: sanitizedLimit,
+    })
+  } catch (error) {
+    console.error('Error fetching db character data: ', error);
+    res.status(500).json({ message: 'Error fetching db character data' });
+  }
+
+  if (dbData.length < sanitizedLimit) {
+    let marvelData;
     try {
-      data = await fetchMarvelData('characters', {
-        // You can pass additional query parameters here
+      marvelData = await fetchMarvelData('characters', {
         offset: offset,
-        limit: limit,
+        limit: sanitizedLimit,
       });
     } catch (error) {
       console.error('Error fetching marvel data: ', error);
+      res.status(500).json({ message: 'Error fetching Marvel data' });
     }
 
-    const characters = data?.data?.results;
+    const characters = marvelData?.data?.results;
 
     for (const character of characters) {
-      const { id: characterId, name, description, thumbnail, comics } = character;
-      const thumbnailUrl = `${thumbnail.path}.${thumbnail.extension}`;
+      const { id: characterId} = character;
       let existingCharacter;
       try {
         existingCharacter = await prisma.character.findUnique({
@@ -30,71 +46,22 @@ export default async function handler(req, res) {
         });
       } catch (error) {
         console.error('Error searching character: ', error);
+        res.status(500).json({ message: 'Error searching character' });
       }
-
       if (!existingCharacter) {
-        try {
-          await prisma.character.create({
-            data: {
-              id: characterId,
-              name,
-              description,
-              thumbnail: thumbnailUrl,
-            },
-          });
-          console.log(`Character with ID ${characterId} created.`);
-        } catch (error) {
-          console.error('Error creating character: ', error);
-        }
-
-        const characterComics = comics?.items;
-        for (const comic of characterComics) {
-          const { name: title, resourceURI } = comic;
-          const parts = resourceURI.split('/');
-          const comicId = Number(parts.pop());
-          let existingComic;
-          try {
-            existingComic = await prisma.comic.findUnique({
-              where: { id: comicId },
-            });
-          } catch (error) {
-            console.error('Error searching comic: ', error);
-          }
-
-          if (!existingComic) {
-            try {
-              await prisma.comic.create({
-                data: {
-                  id: comicId,
-                  title,
-                },
-              });
-              console.log(`Comic with ID ${comicId} created.`);
-            } catch (error) {
-              console.error('Error creating comic: ', error);
-            }
-            try {
-              await prisma.characterComic.create({
-                data: {
-                  characterId,
-                  comicId,
-                },
-              })
-              console.log(`Character Comic relation with character ID ${characterId} and comic ID ${comicId} created.`);
-            } catch (error) {
-              console.error('Error creating character comic relation: ', error);
-            }
-          } else {
-            console.log(`Comic with ID ${comicId} already exists.`);
-          }
-        }
-      } else {
-        console.log(`Character with ID ${characterId} already exists.`);
+        await addCharacterToDb(character);
       }
     }
-    res.status(200).json(data);
-  } catch (error) {
-    console.error("Error data:", error);
-    res.status(500).json({ message: 'Error fetching Marvel data' });
+    try {
+      dbData = await prisma.character.findMany({
+        skip: offset,
+        take: sanitizedLimit,
+      })
+    } catch (error) {
+      console.error('Error fetching db character data: ', error);
+      res.status(500).json({ message: 'Error fetching db character data' });
+    }
   }
+  console.log('dbData: ', dbData);
+  res.status(200).json(dbData);
 }
