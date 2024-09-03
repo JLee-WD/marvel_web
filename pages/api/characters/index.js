@@ -5,7 +5,6 @@ import addCharacterToDb from "@/utils/addCharacterToDb";
 const prisma = new PrismaClient();
 
 export default async function handler(req, res) {
-  
   const offset = parseInt(req.query.offset) || 0;
   const limit = parseInt(req.query.limit) || 16;
   const MAX_LIMIT = 50; // Define your maximum limit
@@ -63,5 +62,5 @@ export default async function handler(req, res) {
     }
   }
   console.log('dbData: ', dbData);
-  res.status(200).json(dbData);
+  return res.status(200).json(dbData);
 }
