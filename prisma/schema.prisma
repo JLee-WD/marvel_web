@@ -24,7 +24,7 @@ model Character {
 model Comic {
   id            Int             @id @default(autoincrement())
   title         String?
-  publishedDate String?
+  publishedDate DateTime?
   characters    CharacterComic[]   
 }
 
