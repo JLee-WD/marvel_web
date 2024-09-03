@@ -1,6 +1,7 @@
 import fetchDataFromApi from '@/utils/fetch'
 import { useEffect, useState } from 'react'
 import Card from '../Card'
+import './styles.css'
 
 const Cards = () => {
   const [data, setData] = useState(null)
@@ -24,14 +25,11 @@ const Cards = () => {
   }, [])
   console.log('data: ', data);
   return (
-    <div>
-      {data && (
-        <div>
-          {data && data?.map((item, index) => (
-            <Card key={index} item={item}/>
-          ))}
-        </div>
-      )}
+    <div className='cards__wrapper'>
+      {data && data?.map((item, index) => (
+          <Card key={index} item={item}/>
+        ))
+      }
     </div>
   )
 }
