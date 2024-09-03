@@ -17,11 +17,7 @@ export default async function handler(req, res) {
 
   const { id, title, publishedDate } = existingComic;
 
-  console.log('comicId: ', comicId);
-  console.log('existingComic: ', existingComic);
-
   let date;
-
   if (!publishedDate) {
     try {
       const data = await fetchMarvelData(`comics/${comicId}`);
@@ -50,7 +46,3 @@ export default async function handler(req, res) {
     res.status(200).json(existingComic);
   }
 }
-
-// get all characters
-// get all comics for all characters
-// 
