@@ -1,3 +1,18 @@
 .comicLink__container {
   padding: 2px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* justify-content: center; */
+}
+
+.comicLink__plus {
+  margin-right: 8px;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+.comicLink__plus:hover {
+  color: rgb(0, 149, 255);
+  transform: scale(1.6);
 }
