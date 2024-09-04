@@ -2,14 +2,15 @@ import fetchDataFromApi from '@/utils/fetch'
 import { useEffect, useState, useRef, useCallback } from 'react'
 import Card from '../Card'
 import './styles.css'
+import Graph from '../Graph'
 
 const Cards = () => {
   const [data, setData] = useState([]);
-  const [page, setPage] = useState(1);
+  const [graphData, setGraphData] = useState([]);
+  const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   
-  // const offset = 0;
-  const limit = 32;
+  const limit = 10;
   const initialFetchDone = useRef(false);
   const isFetching = useRef(false); 
 
@@ -17,22 +18,69 @@ const Cards = () => {
     if (isFetching.current) return;
     isFetching.current = true;
     setLoading(true);
-    // console.log('fetchData page: ', page);
-    // console.log('data?.length: ', data?.length);
-    // console.log('fetchData page * 16: ', data?.length + 16);
-    console.log('fetchData');
     try {
-      const apiData = await fetchDataFromApi({
+      const characterData = await fetchDataFromApi({
         endpoint: 'characters',
         params: {
-          offset: page * limit,
+          offset: initial ? 0 : page * limit,
           limit
         }
       })
+      const characterNodes = characterData.map(character => ({
+        id: character.id,
+        name: character.name,
+        group: 'character',
+        shape: 'circularImage',
+        image: character.thumbnail,
+        size: 48,
+      }))
+      const addedComicIds = new Set();
+      const comicNodes = characterData.flatMap(character => 
+        character.comics
+          .filter(comic => {
+            const comicId = comic.Comic.id;
+            if (addedComicIds.has(comicId)) {
+              return false;
+            } else {
+              addedComicIds.add(comicId);
+              return true;
+            }
+          })
+          .map(comic => ({
+            id: comic.Comic.id,
+            name: comic.Comic.title,
+            group: 'comic',        
+            shape: 'dot',
+            size: 16,
+          }))
+      );
+      const nodes = [...characterNodes, ...comicNodes]
+      const edges = characterData.flatMap(character => 
+        character.comics.map(comic => ({
+          from: character.id,
+          to: comic.Comic.id,
+        })));
+      const newData = {
+        nodes,
+        edges
+      }
+      console.log('newData: ', newData);
       if (initial) {
-        setData(apiData);
+        setData(characterData);
+        setGraphData(newData);
       } else {
-        setData(prevData => [...prevData, ...apiData]);
+        setData(prevData => [...prevData, ...characterData]);
+        const combinedNodes = [...graphData.nodes, ...newData.nodes];
+        const uniqueNodes = combinedNodes.filter((node, index, self) =>
+          index === self.findIndex((n) => n.id === node.id)
+        );
+
+        const combinedEdges = [...graphData.edges, ...newData.edges];
+        const newGraphData = {
+          nodes: [...uniqueNodes],
+          edges: [...combinedEdges]
+        }
+        setGraphData(newGraphData);
       }
       setPage(prevPage => prevPage + 1);
     } catch (error) {
@@ -69,16 +117,21 @@ const Cards = () => {
     };
   }, [loading])
 
-  // console.log('data: ', data);
-  console.log('initialFetchDone: ', initialFetchDone);
-  console.log('data.length: ', data.length);
-  console.log('page: ', page);
+  console.log('data: ', data);
+  console.log('graphData: ', graphData);
+  // console.log('initialFetchDone: ', initialFetchDone);
+  // console.log('page: ', page);
   return (
-    <div className='cards__wrapper'>
-      {data && data?.map((item, index) => {
-          return <Card key={index} item={item}/>
-      })}
-      {loading && <p>Loading more cards...</p>}
+    <div className='cards__mainWrapper'>
+      <div className='cards__container'>
+        {data && data?.map((item, index) => {
+            return <Card key={index} item={item}/>
+        })}
+        {loading && <p>Loading more cards...</p>}
+      </div>
+      <div className='cards__graphWrapper'>
+        <Graph data={graphData} />
+      </div>
     </div>
   )
 }

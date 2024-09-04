@@ -11,7 +11,6 @@ const getRandomGradient = () => {
 
 const Card = ({reference, key, item}) => {
   const { name, description, thumbnail } = item;
-  // console.log('item: ', item);
 
   const thumbnailImg = thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? '/silhouette.png' : thumbnail
 

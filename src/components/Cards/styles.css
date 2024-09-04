@@ -1,7 +1,22 @@
-.cards__wrapper {
+.cards__mainWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex-direction: row;
+}
+
+.cards__container {
+  grid-column: 1 / 2;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
   justify-content: center;
+}
+
+.cards__graphWrapper {
+  position: fixed;
+  right: 0;
+  top: 0;
+  grid-column: 2 / 3;
+  height: 600px;
 }
