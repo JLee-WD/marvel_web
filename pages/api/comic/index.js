@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import fetchMarvelData from "@/utils/marvelClient";
+import updateComic from '@/utils/addOrUpdateComic';
 
 const prisma = new PrismaClient();
 
@@ -18,13 +19,20 @@ export default async function handler(req, res) {
   const { id, title, publishedDate } = existingComic;
 
   let date;
+  let thumbnailUrl;
+  let description;
   if (!publishedDate) {
     try {
       const data = await fetchMarvelData(`comics/${comicId}`);
-      console.log('data: ', data);
       const results = data?.data?.results;
-      const dates = results[0]?.dates;
-      const dateObject = dates?.find((date) => date.type === "onsaleDate");
+      console.log('results: ', results);
+      const { description: resDescription, thumbnail } = results[0];
+      description = resDescription || "No description available.";
+      thumbnailUrl = `${thumbnail.path}.${thumbnail.extension}`;
+      console.log('description: ', description);
+      console.log('thumbnail: ', thumbnail);
+
+      const dateObject = results[0]?.dates?.find((date) => date.type === "onsaleDate");
       date = new Date(dateObject?.date).toISOString();
     } catch (error) {
       console.error("Error fetching marvel data:", error);
@@ -32,15 +40,14 @@ export default async function handler(req, res) {
     }
 
     try {
-      await prisma.comic.update({ 
-        where: { id: comicId }, 
-        data: { publishedDate: date } });
+      updateComic({
+        id, title, publishedDate: date, thumbnail: thumbnailUrl, description
+      })
     } catch (error) {
       console.error("Error data:", error);
-      res.status(500).json({ message: 'Error fetching Marvel data' });
     }
 
-    const responseData = { id, title, publishedDate: date };
+    const responseData = { id, title, publishedDate: date, thumbnail: thumbnailUrl, description };
     res.status(200).json(responseData);
   } else {
     res.status(200).json(existingComic);

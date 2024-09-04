@@ -11,6 +11,7 @@ export default async function handler(req, res) {
   const MIN_LIMIT = 1;   // Define your minimum limit
   const sanitizedLimit = Math.min(Math.max(limit, MIN_LIMIT), MAX_LIMIT);
   let dbData;
+  let responseData = [];
 
   try {
     dbData = await prisma.character.findMany({
@@ -18,7 +19,14 @@ export default async function handler(req, res) {
       take: sanitizedLimit,
       orderBy: {
         name: 'asc'
-      }
+      },
+      include: {
+        comics: {
+          include: {
+            Comic: true,
+          },
+        },
+      },
     })
   } catch (error) {
     console.error('Error fetching db character data: ', error);
@@ -37,7 +45,7 @@ export default async function handler(req, res) {
       console.error('Error fetching marvel data: ', error);
       res.status(500).json({ message: 'Error fetching Marvel data' });
     }
-
+    
     const characters = marvelData?.data?.results;
 
     for (const character of characters) {
@@ -52,22 +60,14 @@ export default async function handler(req, res) {
         res.status(500).json({ message: 'Error searching character' });
       }
       if (!existingCharacter) {
-        await addCharacterToDb(character);
+        addCharacterToDb(character);
       }
+      const characterObj = existingCharacter ? existingCharacter : { id: characterId, name: character.name, description: character.description, thumbnail: `${character.thumbnail.path}.${character.thumbnail.extension}` };
+      responseData.push(characterObj);
     }
-    try {
-      dbData = await prisma.character.findMany({
-        skip: offset,
-        take: sanitizedLimit,
-        orderBy: {
-          name: 'asc'
-        }
-      })
-    } catch (error) {
-      console.error('Error fetching db character data: ', error);
-      res.status(500).json({ message: 'Error fetching db character data' });
-    }
+  } else {
+    responseData = dbData;
   }
-  console.log('dbData: ', dbData);
-  return res.status(200).json(dbData);
+  // console.log('dbData: ', dbData);
+  return res.status(200).json(responseData);
 }

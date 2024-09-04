@@ -11,9 +11,9 @@ export default async function handler(req, res) {
     dbData = await prisma.character.findMany({
       where: { 
         name: {
-          contains: characterName
+          contains: characterName,
         }
-      },
+      }
     })
   } catch (error) {
     console.error('Error fetching db characters by name: ', error);
