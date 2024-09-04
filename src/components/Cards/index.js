@@ -5,10 +5,26 @@ import './styles.css'
 import Graph from '../Graph'
 
 const Cards = () => {
+  const [filterData, setFilterData] = useState([]);
   const [data, setData] = useState([]);
   const [graphData, setGraphData] = useState([]);
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [filterText, setFilterText] = useState('');
+
+  const handleInputChange = (e) => {
+    const value = e.target.value;
+    setFilterText(value);
+    if (value === '') {
+      setFilterData(data);
+    } else {
+      const filteredData = filterData.filter(item =>
+        item.name.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilterData(filteredData);
+    }
+  };
+
   
   const limit = 10;
   const initialFetchDone = useRef(false);
@@ -67,9 +83,11 @@ const Cards = () => {
       }
       console.log('newData: ', newData);
       if (initial) {
+        setFilterData(characterData);
         setData(characterData);
         setGraphData(newData);
       } else {
+        setFilterData(prevData => [...prevData, ...characterData]);
         setData(prevData => [...prevData, ...characterData]);
         const combinedNodes = [...graphData.nodes, ...newData.nodes];
         const uniqueNodes = combinedNodes.filter((node, index, self) =>
@@ -122,10 +140,19 @@ const Cards = () => {
   console.log('graphData: ', graphData);
   return (
     <div className='cards__mainWrapper'>
-      <h1 className='cards__title'>MarvelWeb</h1>
-      <h2 className='cards__subTitle'>Scroll down to see more</h2>
+      <div className='cards__header'>
+        <h1 className='cards__title'>MarvelWeb</h1>
+        <h2 className='cards__subTitle'>Scroll down to see more</h2>
+        <input 
+          className='cards__filterInput'
+          type="text" 
+          placeholder="Filter heroes..." 
+          value={filterText} 
+          onChange={handleInputChange} 
+        />
+      </div>
       <div className='cards__container'>
-        {data && data?.map((item, index) => {
+        {filterData && filterData?.map((item, index) => {
             return <Card key={index} item={item}/>
         })}
         {loading && <p>Loading more cards...</p>}
