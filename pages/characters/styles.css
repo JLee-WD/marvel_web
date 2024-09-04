@@ -54,3 +54,11 @@
     font-family: 'Comic_Neue_bold', sans-serif;
   }
 }
+
+.character__relatedContainer {
+  padding-top: 40px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}

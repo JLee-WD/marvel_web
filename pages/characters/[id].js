@@ -97,7 +97,7 @@ const CharacterPage = ({ character }) => {
           </ul>
         </div>
       </div>        
-      <div>
+      <div className='character__relatedContainer'>
           {uniqueCharacters.map((character) => (
             <Node key={character.id} item={character} />
           ))}
