@@ -16,6 +16,9 @@ export default async function handler(req, res) {
     dbData = await prisma.character.findMany({
       skip: offset,
       take: sanitizedLimit,
+      orderBy: {
+        name: 'asc'
+      }
     })
   } catch (error) {
     console.error('Error fetching db character data: ', error);
@@ -28,6 +31,7 @@ export default async function handler(req, res) {
       marvelData = await fetchMarvelData('characters', {
         offset: offset,
         limit: sanitizedLimit,
+        orderBy: 'name',
       });
     } catch (error) {
       console.error('Error fetching marvel data: ', error);
@@ -55,6 +59,9 @@ export default async function handler(req, res) {
       dbData = await prisma.character.findMany({
         skip: offset,
         take: sanitizedLimit,
+        orderBy: {
+          name: 'asc'
+        }
       })
     } catch (error) {
       console.error('Error fetching db character data: ', error);

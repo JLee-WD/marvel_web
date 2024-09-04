@@ -9,9 +9,9 @@ const getRandomGradient = () => {
   return `linear-gradient(${randomAngle}deg, ${shuffledColors.join(', ')})`;
 }
 
-const Card = ({key, item}) => {
+const Card = ({reference, key, item}) => {
   const { name, description, thumbnail } = item;
-  console.log('item: ', item);
+  // console.log('item: ', item);
 
   const thumbnailImg = thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? '/silhouette.png' : thumbnail
 
@@ -20,7 +20,7 @@ const Card = ({key, item}) => {
   };
 
   return (
-    <div key={key} style={gradientStyle} className='card__container'>
+    <div ref={reference} key={key} style={gradientStyle} className='card__container'>
       <h2 className='card__title'>{name}</h2>
       <div className='card__imageContainer'>
         <img className='card__image' src={thumbnailImg} alt={name} />
