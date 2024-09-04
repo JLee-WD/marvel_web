@@ -2,6 +2,7 @@
 import { PrismaClient } from '@prisma/client';
 import Node from '../../src/components/Node';
 import './styles.css';
+import ComicLink from '../../src/components/ComicLink';
 
 const prisma = new PrismaClient();
 
@@ -90,18 +91,20 @@ const CharacterPage = ({ character }) => {
           <h2 className='character__subTitle'>Comics</h2>
           <ul className='character__comicsList'>
             {comics.map((comicLink) => (
-              <li key={comicLink.comicId}>
-                {comicLink.Comic.title} (Published: {comicLink.Comic.publishedDate})
-              </li>
+              <ComicLink key={comicLink.id} comicLink={comicLink} />
             ))}
           </ul>
         </div>
-      </div>        
-      <div className='character__relatedContainer'>
+      </div>
+      <div className='character__related'>
+        <h3>Appears with:</h3>      
+        <div className='character__relatedContainer'>
           {uniqueCharacters.map((character) => (
             <Node key={character.id} item={character} />
           ))}
       </div>
+      </div>        
+
     </div>
   );
 };
