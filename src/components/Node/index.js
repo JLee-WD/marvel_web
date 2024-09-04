@@ -3,9 +3,8 @@ import './styles.css'
 import getRandomGradient from '../../utils/getRandomGradient'
 
 const Node = ({item}) => {
-  const { character, comic } = item;
-  const { name, description, thumbnail } = character;
-  const { title, publishedDate } = comic;
+  const { character } = item;
+  const { name, thumbnail } = character;
   const gradientStyle = {
     background: getRandomGradient(),
   };

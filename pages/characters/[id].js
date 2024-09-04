@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client';
 import Node from '../../src/components/Node';
 import './styles.css';
 import ComicLink from '../../src/components/ComicLink';
+import ReadingList from '../../src/components/ReadingList';
 
 const prisma = new PrismaClient();
 
@@ -61,7 +62,6 @@ export async function getStaticProps({ params }) {
 
 const CharacterPage = ({ character }) => {
   const { id, name, description, thumbnail, comics } = character;
-  // console.log('character: ', character);
   const thumbnailImg = thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? '/silhouette.png' : thumbnail;
 
   const relatedCharacters = comics.flatMap((comic) =>
@@ -75,12 +75,9 @@ const CharacterPage = ({ character }) => {
     relatedCharacters.map(({ character, comic }) => [character.id, { character, comic }])
   ).values()).filter(({ character }) => character.id !== id);
 
-  // console.log('relatedCharacters: ', relatedCharacters);
-  // console.log('comics: ', comics);
-  console.log('uniqueCharacters: ', uniqueCharacters);
-
   return (
     <div className='character__wrapper'>
+      <ReadingList />
       <div className='character__container'>
         <div className='character__imageContainer'>
           <img className='character__image' src={thumbnailImg} alt={name} />

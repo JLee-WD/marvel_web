@@ -76,3 +76,9 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+
+.character__back {
+  cursor: pointer;
+  font-size: 20px;
+  padding-bottom: 20px;
+}

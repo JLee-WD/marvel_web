@@ -14,7 +14,7 @@ const Card = ({reference, key, item}) => {
   };
 
   return (
-    <a href={`/characters/${id}`} target='_blank' rel='noreferrer'>
+    <a href={`/characters/${id}`} rel='noreferrer'>
       <div ref={reference} key={key} style={gradientStyle} className='card__container'>
         <h2 className='card__title'>{name}</h2>
         <div className='card__imageContainer'>

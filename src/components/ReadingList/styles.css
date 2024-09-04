@@ -1,0 +1,22 @@
+.readingList__container {
+  position: fixed;
+  left: 0;
+  top: 0;
+  margin: 20px 0 0 20px;
+  font-size: 28px;
+  font-family: "New_Amsterdam", sans-serif;
+  cursor: pointer;
+}
+
+.readingList__list {
+  background-color: rgba(76, 76, 76, 0.633);
+  display: none;
+  margin-top: 20px;
+  font-size: 20px;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.readingList__container:hover .readingList__list {
+  display: block;
+}

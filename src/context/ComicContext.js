@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext } from 'react';
 
-export const ComicContext = createContext(null);
+export const ComicContext = createContext([]);
 
 export const ComicProvider = ({ children }) => {
   const [comics, setComics] = useState([]);
