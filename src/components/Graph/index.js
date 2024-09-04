@@ -33,7 +33,7 @@ const Graph = ({ data }) => {
         barnesHut: {
           gravitationalConstant: -2000, // Stronger repulsion to spread out nodes faster
           centralGravity: 0.3,
-          springLength: 100,
+          springLength: 200,
           springConstant: 0.04,
           damping: 0.09,
         },

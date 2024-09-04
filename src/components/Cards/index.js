@@ -32,7 +32,7 @@ const Cards = () => {
         group: 'character',
         shape: 'circularImage',
         image: character.thumbnail,
-        size: 48,
+        size: 80,
       }))
       const addedComicIds = new Set();
       const comicNodes = characterData.flatMap(character => 
@@ -49,9 +49,10 @@ const Cards = () => {
           .map(comic => ({
             id: comic.Comic.id,
             name: comic.Comic.title,
-            group: 'comic',        
-            shape: 'dot',
-            size: 16,
+            group: 'comic',   
+            shape: 'image',
+            image: comic.Comic.thumbnail,
+            size: 32,
           }))
       );
       const nodes = [...characterNodes, ...comicNodes]
@@ -119,10 +120,10 @@ const Cards = () => {
 
   console.log('data: ', data);
   console.log('graphData: ', graphData);
-  // console.log('initialFetchDone: ', initialFetchDone);
-  // console.log('page: ', page);
   return (
     <div className='cards__mainWrapper'>
+      <h1 className='cards__title'>MarvelWeb</h1>
+      <h2 className='cards__subTitle'>Scroll down to see more</h2>
       <div className='cards__container'>
         {data && data?.map((item, index) => {
             return <Card key={index} item={item}/>
