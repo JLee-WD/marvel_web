@@ -1,15 +1,13 @@
 'use client'
 
-import React, { useContext } from 'react'
-import './styles.css'
-import { ComicContext } from '../../context/ComicContext';
+import React from 'react'
+import styles from './styles.module.css'
 
-const ReadingList = () => {
-  const { comics } = useContext(ComicContext);
+const ReadingList = ({comics}) => {
   return (
-    <div className='readingList__container'>
+    <div className={styles.readingList__container}>
       Reading List: {comics ? comics.length : 0}
-      <div className='readingList__list'>
+      <div className={styles.readingList__list}>
         {comics && comics.map(comic => 
           <p key={comic.Comic.id}>{comic.Comic.title}</p>
         )}

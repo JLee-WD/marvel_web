@@ -1,8 +1,7 @@
 import React from 'react'
-import './styles.css'
+import styles from './styles.module.css'
 import getRandomGradient from '../../utils/getRandomGradient'
-
-
+import Link from 'next/link';
 
 const Card = ({reference, key, item}) => {
   const { name, description, thumbnail, id } = item;
@@ -14,17 +13,17 @@ const Card = ({reference, key, item}) => {
   };
 
   return (
-    <a href={`/characters/${id}`} rel='noreferrer'>
-      <div ref={reference} key={key} style={gradientStyle} className='card__container'>
-        <h2 className='card__title'>{name}</h2>
-        <div className='card__imageContainer'>
-          <img className='card__image' src={thumbnailImg} alt={name} />
+    <Link href={`/characters/${id}`}>
+      <div ref={reference} key={key} style={gradientStyle} className={styles.card__container}>
+        <h2 className={styles.card__title}>{name}</h2>
+        <div className={styles.card__imageContainer}>
+          <img className={styles.card__image} src={thumbnailImg} alt={name} />
         </div>
-        <div className='card__descriptionContainer'>
-          <p className='card__description'>{description}</p>
+        <div className={styles.card__descriptionContainer}>
+          <p className={styles.card__description}>{description}</p>
         </div>
       </div>
-    </a>
+    </Link>
   )
 }
 

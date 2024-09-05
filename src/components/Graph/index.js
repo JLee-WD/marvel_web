@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Network } from 'vis-network';
-import './styles.css';
+import styles from './styles.module.css';
 
 const Graph = ({ data }) => {
   const networkRef = useRef(null);
@@ -65,11 +65,11 @@ const Graph = ({ data }) => {
   }, [data]);
 
   return (
-    <div className='graph__wrapper'>
-      <div ref={networkRef} className='graph' />
-      {loading && <p className='graph__loading'>Generating...</p>}
+    <div className={styles.graph__wrapper}>
+      <div ref={networkRef} className={styles.graph} />
+      {loading && <p className={styles.graph__loading}>Generating...</p>}
       {selectedNode && (
-        <div className='graph__details'>
+        <div className={styles.graph__details}>
           <p><strong>Type:</strong> {selectedNode.group}</p>
           <p><strong>Name:</strong> {selectedNode.name}</p>
         </div>

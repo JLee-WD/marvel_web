@@ -1,9 +1,10 @@
 'use client'
 import { PrismaClient } from '@prisma/client';
 import Node from '../../src/components/Node';
-import './styles.css';
+import styles from './styles.module.css';
 import ComicLink from '../../src/components/ComicLink';
-import ReadingList from '../../src/components/ReadingList';
+import { useComic } from '@/context/ComicContext';
+import ReadingList from '@/components/ReadingList';
 
 const prisma = new PrismaClient();
 
@@ -59,6 +60,8 @@ export async function getStaticProps({ params }) {
 
 const CharacterPage = ({ character }) => {
   const { id, name, description, thumbnail, comics } = character;
+  const { comics: contextComics } = useComic();
+  console.log('contextComics: ', contextComics);
   const thumbnailImg = thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg' ? '/silhouette.png' : thumbnail;
 
   const relatedCharacters = comics.flatMap((comic) =>
@@ -73,26 +76,26 @@ const CharacterPage = ({ character }) => {
   ).values()).filter(({ character }) => character.id !== id);
 
   return (
-    <div className='character__wrapper'>
-      <ReadingList />
-      <div className='character__container'>
-        <div className='character__imageContainer'>
-          <img className='character__image' src={thumbnailImg} alt={name} />
+    <div className={styles.character__wrapper}>
+      <ReadingList comics={contextComics} />
+      <div className={styles.character__container}>
+        <div className={styles.character__imageContainer}>
+          <img className={styles.character__image} src={thumbnailImg} alt={name} />
         </div>
-        <div className='character__descriptionContainer'>
-          <h1 className='character__title'>{name}</h1>
-          <p className='character__description'>{description}</p>
-          <h2 className='character__subTitle'>Comics</h2>
-          <ul className='character__comicsList'>
+        <div className={styles.character__descriptionContainer}>
+          <h1 className={styles.character__title}>{name}</h1>
+          <p className={styles.character__description}>{description}</p>
+          <h2 className={styles.character__subTitle}>Comics</h2>
+          <ul className={styles.character__comicsList}>
             {comics.map((comicLink) => (
               <ComicLink key={comicLink.id} comicLink={comicLink} />
             ))}
           </ul>
         </div>
       </div>
-      <div className='character__related'>
+      <div className={styles.character__related}>
         <h3>Appears with:</h3>      
-        <div className='character__relatedContainer'>
+        <div className={styles.character__relatedContainer}>
           {uniqueCharacters.map((character) => (
             <Node key={character.id} item={character} />
           ))}

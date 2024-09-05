@@ -1,5 +1,5 @@
 import React from 'react'
-import './styles.css'
+import styles from './styles.module.css'
 import getRandomGradient from '../../utils/getRandomGradient'
 
 const Node = ({item}) => {
@@ -10,11 +10,11 @@ const Node = ({item}) => {
   };
 
   return (
-    <div className='node__container' style={gradientStyle}>
-      <div className='node__imageContainer'>
-        <img className='node__image' src={thumbnail} alt={name} />
+    <div className={styles.node__container} style={gradientStyle}>
+      <div className={styles.node__imageContainer}>
+        <img className={styles.node__image} src={thumbnail} alt={name} />
       </div>
-      <h3 className='node__title'>{name}</h3>
+      <h3 className={styles.node__title}>{name}</h3>
     </div>
   )
 }

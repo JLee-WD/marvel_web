@@ -1,5 +1,6 @@
-import React, { createContext, useState, useContext } from 'react';
+'use client';
 
+import React, { createContext, useState, useContext } from 'react';
 export const ComicContext = createContext([]);
 
 export const ComicProvider = ({ children }) => {
@@ -11,3 +12,7 @@ export const ComicProvider = ({ children }) => {
     </ComicContext.Provider>
   );
 };
+
+export function useComic() {
+  return useContext(ComicContext);
+}

@@ -1,8 +1,10 @@
 import fetchDataFromApi from '@/utils/fetch'
 import { useEffect, useState, useRef, useCallback } from 'react'
 import Card from '../Card'
-import './styles.css'
+import styles from './styles.module.css'
 import Graph from '../Graph'
+import { useComic } from '../../context/ComicContext';
+import ReadingList from '../ReadingList'
 
 const Cards = () => {
   const [filterData, setFilterData] = useState([]);
@@ -11,6 +13,7 @@ const Cards = () => {
   const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [filterText, setFilterText] = useState('');
+  const { comics: contextComics } = useComic();
 
   const handleInputChange = (e) => {
     const value = e.target.value;
@@ -129,25 +132,26 @@ const Cards = () => {
     };
   }, [loading])
   return (
-    <div className='cards__mainWrapper'>
-      <div className='cards__header'>
-        <h1 className='cards__title'>MarvelWeb</h1>
-        <h2 className='cards__subTitle'>Scroll down to see more</h2>
+    <div className={styles.cards__mainWrapper}>
+      <ReadingList comics={contextComics} />
+      <div className={styles.cards__header}>
+        <h1 className={styles.cards__title}>MarvelWeb</h1>
+        <h2 className={styles.cards__subTitle}>Scroll down to see more</h2>
         <input 
-          className='cards__filterInput'
+          className={styles.cards__filterInput}
           type="text" 
           placeholder="Filter heroes..." 
           value={filterText} 
           onChange={handleInputChange} 
         />
       </div>
-      <div className='cards__container'>
+      <div className={styles.cards__container}>
         {filterData && filterData?.map((item, index) => {
             return <Card key={index} item={item}/>
         })}
         {loading && <p>Loading more cards...</p>}
       </div>
-      <div className='cards__graphWrapper'>
+      <div className={styles.cards__graphWrapper}>
         <Graph data={graphData} />
       </div>
     </div>

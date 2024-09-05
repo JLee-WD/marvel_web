@@ -53,10 +53,6 @@
 .character__comicsList {
   list-style: none;
   padding-top: 12px;
-  li {
-    font-size: 16px;
-    font-family: 'Comic_Neue_bold', sans-serif;
-  }
 }
 
 .character__related {
