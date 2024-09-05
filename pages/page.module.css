@@ -3,7 +3,6 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  /* padding: 4rem 6rem; */
   min-height: 100vh;
   background-color: black;
 }
@@ -16,7 +15,6 @@
   max-width: var(--max-width);
   width: 100%;
   z-index: 2;
-  /* font-family: var(--font-mono); */
 }
 
 .description a {

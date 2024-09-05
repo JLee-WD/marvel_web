@@ -6,14 +6,16 @@
   font-size: 28px;
   font-family: "New_Amsterdam", sans-serif;
   cursor: pointer;
+  z-index: 100;
+  padding: 16px;
+  background-color: rgba(76, 76, 76, 0.633);
 }
 
 .readingList__list {
-  background-color: rgba(76, 76, 76, 0.633);
   display: none;
   margin-top: 20px;
   font-size: 20px;
-  padding: 16px;
+  padding-left: 16px;
   border-radius: 8px;
 }
 
