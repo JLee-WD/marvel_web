@@ -9,7 +9,6 @@ const Node = ({item}) => {
     background: getRandomGradient(),
   };
 
-  console.log('Node item: ', item);
   return (
     <div className='node__container' style={gradientStyle}>
       <div className='node__imageContainer'>

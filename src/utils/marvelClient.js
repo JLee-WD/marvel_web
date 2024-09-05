@@ -14,15 +14,14 @@ function getHash(ts) {
 }
 
 async function fetchMarvelData(endpoint, params = {}) {
-  const ts = new Date().getTime().toString(); // Generate a timestamp
-  const hash = getHash(ts); // Generate the hash
+  const ts = new Date().getTime().toString();
+  const hash = getHash(ts);
 
-  // Add authentication parameters to the request
   const queryParams = {
     ts,
     apikey: publicKey,
     hash,
-    ...params, // Additional parameters passed to the function
+    ...params,
   };
 
   try {

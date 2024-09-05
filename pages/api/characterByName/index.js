@@ -20,8 +20,6 @@ export default async function handler(req, res) {
     res.status(500).json({ message: 'Error fetching db characters by name' });
   }
 
-  console.log('dbData: ', dbData);
-
   if (dbData.length < 1) {
     let marvelData;
     try {
@@ -34,7 +32,6 @@ export default async function handler(req, res) {
     }
 
     const characters = marvelData?.data?.results;
-    console.log('characters: ', characters);
 
     for (const character of characters) {
       const { id: characterId} = character;

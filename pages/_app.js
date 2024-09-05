@@ -1,4 +1,4 @@
-import '../src/app/globals.css'; // Adjust the path as necessary
+import '../src/app/globals.css';
 import { ComicProvider } from '../src/context/ComicContext';
 
 function MyApp({ Component, pageProps }) {

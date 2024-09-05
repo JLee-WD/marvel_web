@@ -25,13 +25,13 @@ const Graph = ({ data }) => {
       },
       physics: {
         enabled: true,
-        solver: 'barnesHut', // Consider switching to 'barnesHut'
+        solver: 'barnesHut',
         stabilization: {
-          iterations: 200, // Reduced iterations for faster stabilization
+          iterations: 200,
           updateInterval: 50,
         },
         barnesHut: {
-          gravitationalConstant: -2000, // Stronger repulsion to spread out nodes faster
+          gravitationalConstant: -2000,
           centralGravity: 0.3,
           springLength: 200,
           springConstant: 0.04,
@@ -46,7 +46,7 @@ const Graph = ({ data }) => {
     const network = new Network(container, data, options);
 
     network.on("stabilizationIterationsDone", function () {
-      setLoading(false);  // Stop showing the loading message
+      setLoading(false);
     });
 
     network.on('click', function (params) {
@@ -63,9 +63,6 @@ const Graph = ({ data }) => {
       network.destroy();
     };
   }, [data]);
-
-  console.log('selectedNode: ', selectedNode);
-  console.log('loading: ', loading);
 
   return (
     <div className='graph__wrapper'>

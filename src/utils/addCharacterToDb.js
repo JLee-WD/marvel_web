@@ -16,7 +16,6 @@ async function addCharacterToDb(character) {
         thumbnail: thumbnailUrl,
       },
     });
-    console.log(`Character with ID ${characterId} created.`);
   } catch (error) {
     return console.error('Error creating character: ', error);
   }

@@ -10,7 +10,6 @@ async function addOrUpdateComic({ comic, characterId }) {
   const thumbnail = comic?.thumbnail ? `${comic?.thumbnail.path}.${comic?.thumbnail.extension}` : '';
   const dateObject = comic?.dates ? comic?.dates?.find((date) => date.type === "onsaleDate") : null;
   const date = dateObject ? new Date(dateObject?.date).toISOString() : null;
-  // const comicObj = { comicId, title, publishedDate: date, thumbnail, description };
 
   let existingComic;
   try {
@@ -33,7 +32,6 @@ async function addOrUpdateComic({ comic, characterId }) {
           description
         },
       });
-      console.log(`Comic with ID ${comicId} created.`);
     } catch (error) {
       return console.error('Error creating comic: ', error);
     }
@@ -52,7 +50,6 @@ async function addOrUpdateComic({ comic, characterId }) {
   } catch (error) {
     console.error('Error adding character-comic relation: ', error);
   }
-  console.log('addedOrUpdatedComic: ', addedOrUpdatedComic);
   
   return addedOrUpdatedComic;
 }

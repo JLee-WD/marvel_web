@@ -10,6 +10,5 @@ export default async function handler(req, res) {
     console.error('Error fetching db character data: ', error);
     res.status(500).json({ message: 'Error fetching db character data' });
   }
-  // console.log('dbData: ', dbData);
   return res.status(200).json(dbData);
 }

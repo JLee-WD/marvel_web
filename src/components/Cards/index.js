@@ -81,7 +81,6 @@ const Cards = () => {
         nodes,
         edges
       }
-      console.log('newData: ', newData);
       if (initial) {
         setFilterData(characterData);
         setData(characterData);
@@ -110,11 +109,8 @@ const Cards = () => {
     }
   };
 
-  // console.log('page: ', page);
-
   useEffect(() => {
     if (initialFetchDone.current) return;
-    console.log('initial fetchData');
     fetchData({initial: true});
     initialFetchDone.current = true;
   }, [])
@@ -127,17 +123,11 @@ const Cards = () => {
   };
 
   useEffect(() => {
-    // Attach scroll event listener
     window.addEventListener('scroll', handleScroll);
-
-    // Cleanup event listener on component unmount
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [loading])
-
-  console.log('data: ', data);
-  console.log('graphData: ', graphData);
   return (
     <div className='cards__mainWrapper'>
       <div className='cards__header'>

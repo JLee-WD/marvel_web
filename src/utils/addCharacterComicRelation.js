@@ -10,7 +10,6 @@ async function addCharacterComicRelation(comicId, characterId) {
         comicId,
       },
     })
-    console.log(`Character Comic relation with character ID ${characterId} and comic ID ${comicId} created.`);
   } catch (error) {
     console.error('Error creating character comic relation: ', error);
   }

@@ -25,12 +25,9 @@ export default async function handler(req, res) {
     try {
       const data = await fetchMarvelData(`comics/${comicId}`);
       const results = data?.data?.results;
-      console.log('results: ', results);
       const { description: resDescription, thumbnail } = results[0];
       description = resDescription || "No description available.";
       thumbnailUrl = `${thumbnail.path}.${thumbnail.extension}`;
-      console.log('description: ', description);
-      console.log('thumbnail: ', thumbnail);
 
       const dateObject = results[0]?.dates?.find((date) => date.type === "onsaleDate");
       date = new Date(dateObject?.date).toISOString();

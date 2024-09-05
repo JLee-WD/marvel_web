@@ -8,12 +8,10 @@ import ReadingList from '../../src/components/ReadingList';
 const prisma = new PrismaClient();
 
 export async function getStaticPaths() {
-  // Fetch all character IDs from the database
   const characters = await prisma.character.findMany({
-    select: { id: true }, // Only select the id field
+    select: { id: true },
   });
 
-  // Generate paths for each character
   const paths = characters.map((character) => ({
     params: { id: character.id.toString() },
   }));
@@ -22,7 +20,6 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  // Fetch character data based on the ID from params
   const character = await prisma.character.findUnique({
     where: { id: parseInt(params.id) },
     include: {
