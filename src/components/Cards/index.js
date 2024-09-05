@@ -65,12 +65,19 @@ const Cards = () => {
               return true;
             }
           })
+          // .map(comic => ({
+          //   id: comic.Comic.id,
+          //   name: comic.Comic.title,
+          //   group: 'comic',   
+          //   shape: 'image',
+          //   image: comic.Comic.thumbnail,
+          //   size: 32,
+          // }))
           .map(comic => ({
             id: comic.Comic.id,
             name: comic.Comic.title,
             group: 'comic',   
-            shape: 'image',
-            image: comic.Comic.thumbnail,
+            shape: 'dot',
             size: 32,
           }))
       );
